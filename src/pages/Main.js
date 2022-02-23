@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import BackImg from '../asset/main_bg.png';
@@ -14,42 +13,42 @@ import ForestCard from '../components/ForestCard';
 const forestInfo = [
   {
     id: 1,
-    forestName: '충청도휴양마을',
+    name: '충청도휴양마을',
     address: '충청도',
     memo: 'Test메모10',
     phoneNumber: '012-2334-1232',
   },
   {
     id: 2,
-    forestName: '전라도휴양마을',
+    name: '전라도휴양마을',
     address: '전라도',
     memo: 'Test메모20',
     phoneNumber: '012-2334-1232',
   },
   {
     id: 3,
-    forestName: '강원도휴양마을',
+    name: '강원도휴양마을',
     address: '강원도',
     memo: 'Test메모12',
     phoneNumber: '012-2334-1232',
   },
   {
     id: 4,
-    forestName: '경기도휴양마을',
+    name: '경기도휴양마을',
     address: '경기도',
     memo: 'Test메모22',
     phoneNumber: '012-2334-1232',
   },
   {
     id: 5,
-    forestName: '경사도휴양마을',
+    name: '경사도휴양마을',
     address: '경상도',
     memo: 'Test메모13',
     phoneNumber: '012-2334-1232',
   },
   {
     id: 6,
-    forestName: '제주도휴양마을',
+    name: '제주도휴양마을',
     address: '제주도',
     memo: 'Test메모23',
     phoneNumber: '012-2334-1232',
@@ -63,7 +62,6 @@ export default function Main() {
   const [showFeedbackMemo, setShowFeedbackMemo] = useState(false);
   const [showFeedbackSave, setShowFeedbackSave] = useState(false);
   const [showFeedbackRemove, setShowFeedbackRemove] = useState(false);
-
 
   const keyWordRef = useRef(null);
   const FeedbackHandler = (setter) => {
@@ -82,7 +80,12 @@ export default function Main() {
   };
 
   const onChangeInput = () => {
-    const keyword = filterName === '이름' ? 'forestName' : 'memo';
+    const keyword =
+      filterName === '이름'
+        ? 'forestName'
+        : filterName === '메모'
+        ? 'memo'
+        : 'address';
     const filteredForest = forestInfo.filter((item) =>
       item[keyword].includes(keyWordRef.current.value),
     );
@@ -95,10 +98,10 @@ export default function Main() {
         <div className="main_filter">
           <div className="filter" onClick={showFilterHandler}>
             <span>{filterName}</span>
-            <span>&#60;</span>
+            <span>&#62;</span>
             <ul onClick={(e) => setFilterName(e.target.textContent)}>
-
               <li>이름</li>
+              <li>주소</li>
               <li>메모</li>
             </ul>
           </div>
@@ -170,7 +173,6 @@ const MainPage = styled.main`
       color: white;
       box-shadow: 2px 2px 6px 0px gray;
 
-
       ul {
         display: flex;
         flex-direction: column;
@@ -181,7 +183,7 @@ const MainPage = styled.main`
         left: 0;
         width: 100%;
         max-height: ${({ showFilterList }) =>
-        showFilterList ? '200px' : '0px'};
+          showFilterList ? '200px' : '0px'};
         padding-left: 0;
         margin-top: 10px;
 
@@ -231,7 +233,6 @@ const MainPage = styled.main`
     align-items: center;
     flex: 1;
     margin-top: 70px;
-
 
     p {
       color: #ffffff;

@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ForestCard = (props) => {
-  const { name, address, phoneNumber } = props.placeInfo;
+  const { name, address, phoneNumber, memo } = props.placeInfo;
   return (
     <Card>
       <h3>{name}</h3>
       <div>📍 {address}</div>
       <div>📞 {phoneNumber}</div>
+      <div>{memo && memo}</div>
     </Card>
   );
 };
