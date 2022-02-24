@@ -2,7 +2,7 @@
 # wanted-codestates-project-10-8
 ---
 #  배포 링크
-📎 [과제링크]([https://forest-app.herokuapp.com/](https://forest-app.herokuapp.com/)
+📎 [과제링크](https://forest-app.herokuapp.com/)
 
 # 🌳 Forest-Memo
 
