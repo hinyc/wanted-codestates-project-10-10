@@ -5,9 +5,11 @@ import styled from 'styled-components';
 import Modal from '../components/Modal';
 import ForestCard from '../components/ForestCard';
 import Spinner from '../components/Spinner';
+import axios from 'axios';
 
 export default function List({ setShowSaveMsg }) {
-  const URL = '/openapi-json/pubdata/pubMapForest.do';
+  const URL =
+    'https://my-proxy-forest.herokuapp.com/https://www.chungbuk.go.kr/openapi-json/pubdata/pubMapForest.do';
   const PAGE_NUMBER = 1;
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(PAGE_NUMBER);
@@ -17,6 +19,7 @@ export default function List({ setShowSaveMsg }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectList, setSelectList] = useState({});
   const idSet = new Set();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
     rootMargin: '0px',
@@ -26,41 +29,36 @@ export default function List({ setShowSaveMsg }) {
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await (
-        await fetch(`${URL}?pageNo=${page}&numOfRows=20`)
-      ).json();
-      const dataArr = JSON.parse(res).response;
-      setforestDataList((prev) => [...prev, ...dataArr]);
+      const { data } = await axios.get(`${URL}?pageNo=${page}&numOfRows=20`);
+      const { response } = await JSON.parse(data);
+      setforestDataList((prev) => [...prev, ...response]);
     } catch (err) {
       console.log(err);
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading]);
+  }, [page]);
 
   useEffect(() => {
     loadData();
-  }, [page]);
+  }, [loadData]);
 
-  const callback = ([entry], observer) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const callback = ([entry]) => {
     if (entry.isIntersecting) setPage(page + 1);
   };
+
   useEffect(() => {
     if (!targetRef.current) return;
     const observer = new IntersectionObserver(callback, options);
     observer.observe(targetRef.current);
     return () => observer.disconnect();
-  }, [loadData]);
+  }, [callback, options]);
 
   const handleClick = () => {
     navigate('/');
     setShowSaveMsg(false);
   };
-
-  // useEffect(() => {
-  //   observer.current = new IntersectionObserver((entries, options));
-  // });
-  console.log(selectList);
 
   const cardList = forestDataList.map((dataObj, idx) => {
     if (idSet.has(dataObj.fcNo)) {
@@ -90,7 +88,13 @@ export default function List({ setShowSaveMsg }) {
           </ReturnButton>
         </ButtonWrapper>
         <CardListWrapper>{cardList}</CardListWrapper>
-        {modalOpen && <Modal setModalOpen={setModalOpen} data={selectList} setShowSaveMsg={setShowSaveMsg} />}
+        {modalOpen && (
+          <Modal
+            setModalOpen={setModalOpen}
+            data={selectList}
+            setShowSaveMsg={setShowSaveMsg}
+          />
+        )}
       </ListPage>
     </ListContainer>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { MemoExistMsg, MemoRequestMsg } from './Feedback';
@@ -10,8 +10,6 @@ const Modal = ({
   setShowSaveMsg,
   setShowRemoveMsg,
 }) => {
-  console.log(data);
-  // const [modalOpen, setModalOpen] = useState(false);
   const isMain = window.location.pathname === '/';
   const [showExistMsg, setShowExistMsg] = useState(false);
   const [showMemo, setShowMemo] = useState(false);
@@ -19,10 +17,13 @@ const Modal = ({
   const [inputValue, setInputValue] = useState(memo);
   const [myForestList, setMyForestList] = useState([]);
 
+  const inputValueRef = useRef(null);
+  let timeoutRef = useRef('');
+
   const navigate = useNavigate();
   const FeedbackHandler = (setter) => {
     setter(true);
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setter(false);
     }, 1000);
   };
@@ -33,15 +34,16 @@ const Modal = ({
       setMyForestList(test);
     }
   }, []);
+
+
   const openModal = () => {
-    // setModalOpen(true);
-  };
+
   const closeModal = () => {
     setModalOpen(false);
   };
   const showMemoRequests = () => {
     if (showMemo) return;
-    if (inputValue.length === 0) {
+    if (!inputValue) {
       setShowMemo(true);
       setTimeout(() => {
         setShowMemo(false);
@@ -50,14 +52,14 @@ const Modal = ({
   };
   const saveMyForest = () => {
     showMemoRequests();
-    if (inputValue.length > 0) {
+    if (inputValue) {
       if (!myForestList.some((v) => v.fcNm === fcNm)) {
         const myForestArry = [
           ...myForestList,
           {
-            fcNm: fcNm,
-            fcAddr: fcAddr,
-            ref1: ref1,
+            fcNm,
+            fcAddr,
+            ref1,
             memo: inputValue,
           },
         ];
@@ -70,17 +72,21 @@ const Modal = ({
         FeedbackHandler(setShowExistMsg);
       }
     }
+    const myForestArry = [
+      ...myForestList,
+      {
+        id: Date.now(),
+        fcNm,
+        fcAddr,
+        ref1,
+        memo: inputValue,
+      },
+    ];
+    window.localStorage.setItem('myForest', JSON.stringify(myForestArry));
+    setModalOpen(false);
+    navigate('/');
+    setShowSaveMsg(true);
   };
-
-  // const inputHandler = () => {
-  //   showMemoRequests();
-  //   if (inputValue.length > 0) {
-  //     saveMyForest();
-  //     setModalOpen(false);
-  //     navigate('/');
-  //     setShowSaveMsg(true);
-  //   }
-  // };
 
   const deleteMemo = () => {
     const places = JSON.parse(localStorage.getItem('myForest'));
@@ -109,9 +115,7 @@ const Modal = ({
 
   return (
     <>
-      {showMemo && <MemoRequestMsg />}
       <ModalBox>
-        <ModalBtn onClick={openModal}>ModalTest-BTN</ModalBtn>
         <>
           <ModalContents>
             <Box>
@@ -129,10 +133,9 @@ const Modal = ({
             <BoxTwo>
               <p className="BoxText">메모</p>
               <MemoInput
-                value={inputValue}
-                onChange={(event) => {
-                  setInputValue(event.target.value);
-                }}
+                ref={inputValueRef}
+                value={inputValue || ''}
+                onChange={(event) => setInputValue(event.target.value)}
               />
               {isMain && (
                 <>
@@ -147,6 +150,7 @@ const Modal = ({
         </>
       </ModalBox>
       {showExistMsg && <MemoExistMsg />}
+      {showMemo && <MemoRequestMsg />}
     </>
   );
 };
@@ -154,16 +158,6 @@ const Modal = ({
 const ModalBox = styled.div`
   width: auto;
   height: auto;
-`;
-
-const ModalBtn = styled.button`
-  width: 220px;
-  height: 50px;
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 15px;
-  background-color: #85f9cf;
 `;
 
 const ModalContents = styled.div`
@@ -241,7 +235,7 @@ const SaveButton = styled.button`
 `;
 
 const DeleteButton = styled.span`
-  width: 50%;
+  width: 48%;
   height: 45px;
   box-sizing: border-box;
   display: inline-block;
@@ -258,12 +252,13 @@ const DeleteButton = styled.span`
 `;
 
 const UpdateButton = styled.span`
-  width: 50%;
+  width: 48%;
   height: 45px;
   box-sizing: border-box;
   display: inline-block;
   color: #fff;
   margin-top: 20px;
+  margin-left: 4%;
   padding: 0 10px;
   background-color: #85f9cf;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

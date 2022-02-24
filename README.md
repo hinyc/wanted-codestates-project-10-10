@@ -1,4 +1,25 @@
-# wanted-codestates-project-10-10
+
+# 🌳 Forest-Memo
+
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/82592845/155390853-41dff1fd-90bf-4453-9117-4e8849155e83.png">
+
+> 충청북도의 오픈API 데이터를 활용하여, 마음에 드는 휴양림에 메모를 남기고 관리할 수 있는 웹페이지입니다.
+
+---
+
+## 배포 링크
+
+[https://forest-app.herokuapp.com/](https://forest-app.herokuapp.com/)
+
+---
+
+## 팀 구성
+`홍인열`
+<br/>
+**팀원**
+`김주영`|`박창진`|`복지호`|`우혁주`|`장혜민`|`전용태`
+
+# wanted-codestates-project-10-8
 ---
 # 완성된 GIF 파일 혹은 배포 링크
 📎 [과제링크](https://ecstatic-pike-639534.netlify.app/)
@@ -31,9 +52,3 @@
 - 지금당장 휴양림을 골라서 바쁜날을 한템포 쉬어갈 수 있도록 해보세요!
 
 
-
-**팀장** 
-`홍인열`
-<br/>
-**팀원**
-`김주영`|`박창진`|`복지호`|`우혁주`|`장혜민`|`전용태`
