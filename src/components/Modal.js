@@ -35,9 +35,6 @@ const Modal = ({
     }
   }, []);
 
-
-  const openModal = () => {
-
   const closeModal = () => {
     setModalOpen(false);
   };

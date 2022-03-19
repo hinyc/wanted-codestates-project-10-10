@@ -43,12 +43,16 @@ export default function List({ setShowSaveMsg }) {
     loadData();
   }, [loadData]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const callback = ([entry]) => {
-    if (entry.isIntersecting) setPage(page + 1);
-  };
+  const callback = useCallback(
+    ([entry]) => {
+      if (entry.isIntersecting) setPage(page + 1);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [targetRef.current],
+  );
 
   useEffect(() => {
+    console.log(targetRef.current);
     if (!targetRef.current) return;
     const observer = new IntersectionObserver(callback, options);
     observer.observe(targetRef.current);
@@ -77,17 +81,19 @@ export default function List({ setShowSaveMsg }) {
       );
     }
   });
-
   return (
     <ListContainer>
       <ListPage>
-        {isLoading && <Spinner />}
         <ButtonWrapper>
           <ReturnButton onClick={handleClick}>
             <span>메인으로</span>
           </ReturnButton>
         </ButtonWrapper>
-        <CardListWrapper>{cardList}</CardListWrapper>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <CardListWrapper>{cardList}</CardListWrapper>
+        )}
         {modalOpen && (
           <Modal
             setModalOpen={setModalOpen}
