@@ -47,8 +47,7 @@ export default function List({ setShowSaveMsg }) {
     ([entry]) => {
       if (entry.isIntersecting) setPage(page + 1);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [targetRef.current],
+    [page],
   );
 
   useEffect(() => {
@@ -109,15 +108,22 @@ export default function List({ setShowSaveMsg }) {
 const ListContainer = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
   background: #efefef;
 `;
 
-const ListPage = styled(ListContainer)`
+const ListPage = styled.div`
+  position: relative;
+  margin: auto;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   width: 390px;
-  height: 844px;
+  height: 100%;
+  min-height: 300px;
+  max-height: 844px;
   flex-direction: column;
   align-items: center;
   background: #fff;
@@ -150,6 +156,12 @@ const ReturnButton = styled.button`
   span {
     font-size: 16px;
     margin-left: 4px;
+    :hover {
+      opacity: 0.65;
+    }
+    :active {
+      opacity: 0.95;
+    }
   }
 `;
 

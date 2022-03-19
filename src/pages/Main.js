@@ -93,10 +93,8 @@ export default function Main({ showSaveMsg }) {
                 setShowRemoveMsg={setShowRemoveMsg}
               />
             )}
-            <div>
-              <AddButton onClick={() => navigate('/list')}>&#43;</AddButton>
-            </div>
           </div>
+          <AddButton onClick={() => navigate('/list')}>&#43;</AddButton>
         </MainPage>
       </MainContainer>
       {showSaveMsg && <CompleteSavedMsg />}
@@ -108,19 +106,21 @@ export default function Main({ showSaveMsg }) {
 const MainContainer = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
   background: #efefef;
 `;
 
 const MainPage = styled.main`
+  position: relative;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 390px;
-  height: 844px;
+  height: 100%;
+  min-height: 300px;
+  max-height: 844px;
   padding: 30px 0;
   overflow: auto;
   background: #fff;
@@ -220,25 +220,24 @@ const MainPage = styled.main`
 `;
 
 const AddButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
+  position: absolute;
+  bottom: 25px;
+  right: 15px;
   width: 52px;
   height: 52px;
   line-height: 52px;
-  margin-top: 10px;
   border: transparent;
   border-radius: 15px;
-  color: #ffffff;
+  color: #fff;
   background-color: #85f9cf;
   font-weight: 600;
   font-size: 50px;
   cursor: pointer;
-  bottom: 1%;
-  left: 50%;
   opacity: 100%;
-  transform: translateX(-50%) translateY(-50%);
-  @media screen and (max-width: 500px) {
-    bottom: 1%;
+  :hover {
+    opacity: 0.65;
+  }
+  :active {
+    opacity: 0.95;
   }
 `;
