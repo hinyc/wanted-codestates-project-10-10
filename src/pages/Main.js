@@ -2,12 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Arrow } from '../asset/Arrow.svg';
 import { useNavigate } from 'react-router-dom';
-import { CompleteRemovedMsg, CompleteSavedMsg } from '../components/Feedback';
+import {
+  CompleteModifiedMsg,
+  CompleteRemovedMsg,
+  CompleteSavedMsg,
+} from '../components/Feedback';
 
 import ForestCard from '../components/ForestCard';
 import Modal from '../components/Modal';
 
-export default function Main({ showSaveMsg }) {
+export default function Main({
+  showSaveMsg,
+  setShowSaveMsg,
+  showCompleteModifiedMsg,
+  setShowCompleteModifiedMsg,
+}) {
   const [showRemoveMsg, setShowRemoveMsg] = useState(false);
   const [myForestPlaces, setMyForestPlaces] = useState('');
   const [checkForest, setCheckForest] = useState([]);
@@ -78,7 +87,7 @@ export default function Main({ showSaveMsg }) {
               {myForestPlaces &&
                 myForestPlaces.map((place, i) => (
                   <ForestCard
-                    key={place.id}
+                    key={i}
                     setSelectList={setSelectList}
                     setModalOpen={setModalOpen}
                     dataObj={place}
@@ -91,14 +100,23 @@ export default function Main({ showSaveMsg }) {
                 data={selectList}
                 setMyForestPlaces={setMyForestPlaces}
                 setShowRemoveMsg={setShowRemoveMsg}
+                setShowCompleteModifiedMsg={setShowCompleteModifiedMsg}
               />
             )}
           </div>
           <AddButton onClick={() => navigate('/list')}>&#43;</AddButton>
         </MainPage>
       </MainContainer>
-      {showSaveMsg && <CompleteSavedMsg />}
-      {showRemoveMsg && <CompleteRemovedMsg />}
+
+      {showSaveMsg && <CompleteSavedMsg setShowSaveMsg={setShowSaveMsg} />}
+      {showRemoveMsg && (
+        <CompleteRemovedMsg setShowRemoveMsg={setShowRemoveMsg} />
+      )}
+      {showCompleteModifiedMsg && (
+        <CompleteModifiedMsg
+          setShowCompleteModifiedMsg={setShowCompleteModifiedMsg}
+        />
+      )}
     </>
   );
 }

@@ -1,32 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { MemoExistMsg, MemoRequestMsg } from './Feedback';
+import { CompleteModifiedMsg, MemoExistMsg, MemoRequestMsg } from './Feedback';
 
-const Modal = ({
-  data,
-  setModalOpen,
-  setMyForestPlaces,
-  setShowSaveMsg,
-  setShowRemoveMsg,
-}) => {
+const Modal = ({ data, setModalOpen, setMyForestPlaces, setShowSaveMsg, setShowRemoveMsg, setShowCompleteModifiedMsg }) => {
   const isMain = window.location.pathname === '/';
   const [showExistMsg, setShowExistMsg] = useState(false);
-  const [showMemo, setShowMemo] = useState(false);
+  const [showMemoRequestMsg, setShowMemoRequestMsg] = useState(false);
   const { fcNm, fcAddr, ref1, memo } = data;
   const [inputValue, setInputValue] = useState(memo);
   const [myForestList, setMyForestList] = useState([]);
 
   const inputValueRef = useRef(null);
-  let timeoutRef = useRef('');
 
   const navigate = useNavigate();
-  const FeedbackHandler = (setter) => {
-    setter(true);
-    timeoutRef.current = setTimeout(() => {
-      setter(false);
-    }, 1000);
-  };
 
   useEffect(() => {
     const test = JSON.parse(window.localStorage.getItem('myForest'));
@@ -38,17 +25,8 @@ const Modal = ({
   const closeModal = () => {
     setModalOpen(false);
   };
-  const showMemoRequests = () => {
-    if (showMemo) return;
-    if (!inputValue) {
-      setShowMemo(true);
-      setTimeout(() => {
-        setShowMemo(false);
-      }, 1000);
-    }
-  };
+
   const saveMyForest = () => {
-    showMemoRequests();
     if (inputValue) {
       if (!myForestList.some((v) => v.fcNm === fcNm)) {
         const myForestArry = [
@@ -66,23 +44,10 @@ const Modal = ({
         setShowSaveMsg(true);
       } else {
         setShowExistMsg(true);
-        FeedbackHandler(setShowExistMsg);
       }
+    } else {
+      setShowMemoRequestMsg(true);
     }
-    const myForestArry = [
-      ...myForestList,
-      {
-        id: Date.now(),
-        fcNm,
-        fcAddr,
-        ref1,
-        memo: inputValue,
-      },
-    ];
-    window.localStorage.setItem('myForest', JSON.stringify(myForestArry));
-    setModalOpen(false);
-    navigate('/');
-    setShowSaveMsg(true);
   };
 
   const deleteMemo = () => {
@@ -95,7 +60,6 @@ const Modal = ({
   };
 
   const updateMemo = () => {
-    showMemoRequests();
     if (inputValue.length > 0) {
       const places = JSON.parse(localStorage.getItem('myForest'));
       const updated = places.map((place) => {
@@ -107,6 +71,9 @@ const Modal = ({
       localStorage.setItem('myForest', JSON.stringify(updated));
       setMyForestPlaces(updated);
       setModalOpen(false);
+      setShowCompleteModifiedMsg(true);
+    } else {
+      setShowMemoRequestMsg(true);
     }
   };
 
@@ -129,11 +96,7 @@ const Modal = ({
             </Box>
             <BoxTwo>
               <p className="BoxText">메모</p>
-              <MemoInput
-                ref={inputValueRef}
-                value={inputValue || ''}
-                onChange={(event) => setInputValue(event.target.value)}
-              />
+              <MemoInput ref={inputValueRef} value={inputValue || ''} onChange={(event) => setInputValue(event.target.value)} />
               {isMain && (
                 <>
                   <DeleteButton onClick={deleteMemo}>삭제</DeleteButton>
@@ -146,8 +109,8 @@ const Modal = ({
           <ModalBackground onClick={closeModal} />
         </>
       </ModalBox>
-      {showExistMsg && <MemoExistMsg />}
-      {showMemo && <MemoRequestMsg />}
+      {showExistMsg && <MemoExistMsg setShowExistMsg={setShowExistMsg} />}
+      {showMemoRequestMsg && <MemoRequestMsg setShowMemoRequestMsg={setShowMemoRequestMsg} />}
     </>
   );
 };

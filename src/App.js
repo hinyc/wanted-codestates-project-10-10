@@ -6,15 +6,17 @@ import GlobalStyles from './styles/GlobalStyles';
 
 function App() {
   const [showSaveMsg, setShowSaveMsg] = useState(false);
+  const [showCompleteModifiedMsg, setShowCompleteModifiedMsg] = useState(false);
+
   return (
     <Router>
       <GlobalStyles />
       <Routes>
-        <Route path="/" element={<Main showSaveMsg={showSaveMsg} />} />
         <Route
-          path="/list"
-          element={<List setShowSaveMsg={setShowSaveMsg} />}
+          path="/"
+          element={<Main showSaveMsg={showSaveMsg} setShowSaveMsg={setShowSaveMsg} showCompleteModifiedMsg={showCompleteModifiedMsg} setShowCompleteModifiedMsg={setShowCompleteModifiedMsg} />}
         />
+        <Route path="/list" element={<List setShowSaveMsg={setShowSaveMsg} />} />
       </Routes>
     </Router>
   );
