@@ -57,7 +57,9 @@ export default function Main({
     );
     setMyForestPlaces(filteredForest);
   };
-
+  const setFilterHandler = (e) => {
+    if (e.target.textContent) setFilterName(e.target.textContent);
+  };
   return (
     <>
       <MainContainer>
@@ -68,7 +70,10 @@ export default function Main({
               <span>
                 <Arrow fill="#333" width="12" />
               </span>
-              <ul onClick={(e) => setFilterName(e.target.textContent)}>
+              <ul onClick={setFilterHandler}>
+                {showFilterList && (
+                  <DropDownCloser onClick={() => setFilterList(false)} />
+                )}
                 <li>이름</li>
                 <li>주소</li>
                 <li>메모</li>
@@ -194,10 +199,10 @@ const MainPage = styled.main`
         padding: 10px 0;
         border-radius: 15px;
         text-align: center;
-      }
-
-      li:hover {
-        background: rgba(133, 249, 207);
+        transition: 0.2s;
+        :hover {
+          background: rgba(133, 249, 207);
+        }
       }
     }
 
@@ -214,7 +219,7 @@ const MainPage = styled.main`
     }
 
     input::placeholder {
-      color: #000;
+      color: #c8c8c8;
     }
   }
 
@@ -252,10 +257,20 @@ const AddButton = styled.button`
   font-size: 50px;
   cursor: pointer;
   opacity: 100%;
+  transition: 0.3s;
   :hover {
     opacity: 0.65;
   }
   :active {
     opacity: 0.95;
   }
+`;
+
+const DropDownCloser = styled.div`
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
 `;
