@@ -208,6 +208,14 @@ const SaveButton = styled.button`
   border-radius: 15px;
   font-weight: bold;
   font-size: 16px;
+  transition: 0.2s;
+  :hover {
+    cursor: pointer;
+    opacity: 0.65;
+  }
+  :active {
+    opacity: 0.95;
+  }
 `;
 
 const DeleteButton = styled.span`
@@ -225,6 +233,14 @@ const DeleteButton = styled.span`
   font-size: 16px;
   line-height: 45px;
   text-align: center;
+  transition: 0.2s;
+  :hover {
+    cursor: pointer;
+    opacity: 0.65;
+  }
+  :active {
+    opacity: 0.95;
+  }
 `;
 
 const UpdateButton = styled.span`
@@ -243,6 +259,14 @@ const UpdateButton = styled.span`
   font-size: 16px;
   line-height: 45px;
   text-align: center;
+  transition: 0.2s;
+  :hover {
+    cursor: pointer;
+    opacity: 0.65;
+  }
+  :active {
+    opacity: 0.95;
+  }
 `;
 
 const ModalBackground = styled.div`
