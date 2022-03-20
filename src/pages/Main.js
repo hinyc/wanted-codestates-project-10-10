@@ -2,12 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Arrow } from '../asset/Arrow.svg';
 import { useNavigate } from 'react-router-dom';
-import { CompleteRemovedMsg, CompleteSavedMsg } from '../components/Feedback';
+import {
+  CompleteModifiedMsg,
+  CompleteRemovedMsg,
+  CompleteSavedMsg,
+} from '../components/Feedback';
 
 import ForestCard from '../components/ForestCard';
 import Modal from '../components/Modal';
 
-export default function Main({ showSaveMsg }) {
+export default function Main({
+  showSaveMsg,
+  setShowSaveMsg,
+  showCompleteModifiedMsg,
+  setShowCompleteModifiedMsg,
+}) {
   const [showRemoveMsg, setShowRemoveMsg] = useState(false);
   const [myForestPlaces, setMyForestPlaces] = useState('');
   const [checkForest, setCheckForest] = useState([]);
@@ -48,7 +57,9 @@ export default function Main({ showSaveMsg }) {
     );
     setMyForestPlaces(filteredForest);
   };
-
+  const setFilterHandler = (e) => {
+    if (e.target.textContent) setFilterName(e.target.textContent);
+  };
   return (
     <>
       <MainContainer>
@@ -59,7 +70,10 @@ export default function Main({ showSaveMsg }) {
               <span>
                 <Arrow fill="#333" width="12" />
               </span>
-              <ul onClick={(e) => setFilterName(e.target.textContent)}>
+              <ul onClick={setFilterHandler}>
+                {showFilterList && (
+                  <DropDownCloser onClick={() => setFilterList(false)} />
+                )}
                 <li>이름</li>
                 <li>주소</li>
                 <li>메모</li>
@@ -78,7 +92,7 @@ export default function Main({ showSaveMsg }) {
               {myForestPlaces &&
                 myForestPlaces.map((place, i) => (
                   <ForestCard
-                    key={place.id}
+                    key={i}
                     setSelectList={setSelectList}
                     setModalOpen={setModalOpen}
                     dataObj={place}
@@ -91,16 +105,23 @@ export default function Main({ showSaveMsg }) {
                 data={selectList}
                 setMyForestPlaces={setMyForestPlaces}
                 setShowRemoveMsg={setShowRemoveMsg}
+                setShowCompleteModifiedMsg={setShowCompleteModifiedMsg}
               />
             )}
-            <div>
-              <AddButton onClick={() => navigate('/list')}>&#43;</AddButton>
-            </div>
           </div>
+          <AddButton onClick={() => navigate('/list')}>&#43;</AddButton>
         </MainPage>
       </MainContainer>
-      {showSaveMsg && <CompleteSavedMsg />}
-      {showRemoveMsg && <CompleteRemovedMsg />}
+
+      {showSaveMsg && <CompleteSavedMsg setShowSaveMsg={setShowSaveMsg} />}
+      {showRemoveMsg && (
+        <CompleteRemovedMsg setShowRemoveMsg={setShowRemoveMsg} />
+      )}
+      {showCompleteModifiedMsg && (
+        <CompleteModifiedMsg
+          setShowCompleteModifiedMsg={setShowCompleteModifiedMsg}
+        />
+      )}
     </>
   );
 }
@@ -108,19 +129,21 @@ export default function Main({ showSaveMsg }) {
 const MainContainer = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
   background: #efefef;
 `;
 
 const MainPage = styled.main`
+  position: relative;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 390px;
-  height: 844px;
+  height: 100%;
+  min-height: 300px;
+  max-height: 844px;
   padding: 30px 0;
   overflow: auto;
   background: #fff;
@@ -176,10 +199,10 @@ const MainPage = styled.main`
         padding: 10px 0;
         border-radius: 15px;
         text-align: center;
-      }
-
-      li:hover {
-        background: rgba(133, 249, 207);
+        transition: 0.2s;
+        :hover {
+          background: rgba(133, 249, 207);
+        }
       }
     }
 
@@ -196,7 +219,7 @@ const MainPage = styled.main`
     }
 
     input::placeholder {
-      color: #000;
+      color: #c8c8c8;
     }
   }
 
@@ -220,25 +243,34 @@ const MainPage = styled.main`
 `;
 
 const AddButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
+  position: absolute;
+  bottom: 25px;
+  right: 15px;
   width: 52px;
   height: 52px;
   line-height: 52px;
-  margin-top: 10px;
   border: transparent;
   border-radius: 15px;
-  color: #ffffff;
+  color: #fff;
   background-color: #85f9cf;
   font-weight: 600;
   font-size: 50px;
   cursor: pointer;
-  bottom: 1%;
-  left: 50%;
   opacity: 100%;
-  transform: translateX(-50%) translateY(-50%);
-  @media screen and (max-width: 500px) {
-    bottom: 1%;
+  transition: 0.3s;
+  :hover {
+    opacity: 0.65;
   }
+  :active {
+    opacity: 0.95;
+  }
+`;
+
+const DropDownCloser = styled.div`
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
 `;

@@ -43,12 +43,15 @@ export default function List({ setShowSaveMsg }) {
     loadData();
   }, [loadData]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const callback = ([entry]) => {
-    if (entry.isIntersecting) setPage(page + 1);
-  };
+  const callback = useCallback(
+    ([entry]) => {
+      if (entry.isIntersecting) setPage(page + 1);
+    },
+    [page],
+  );
 
   useEffect(() => {
+    console.log(targetRef.current);
     if (!targetRef.current) return;
     const observer = new IntersectionObserver(callback, options);
     observer.observe(targetRef.current);
@@ -77,17 +80,19 @@ export default function List({ setShowSaveMsg }) {
       );
     }
   });
-
   return (
     <ListContainer>
       <ListPage>
-        {isLoading && <Spinner />}
         <ButtonWrapper>
           <ReturnButton onClick={handleClick}>
             <span>메인으로</span>
           </ReturnButton>
         </ButtonWrapper>
-        <CardListWrapper>{cardList}</CardListWrapper>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <CardListWrapper>{cardList}</CardListWrapper>
+        )}
         {modalOpen && (
           <Modal
             setModalOpen={setModalOpen}
@@ -103,15 +108,22 @@ export default function List({ setShowSaveMsg }) {
 const ListContainer = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
   background: #efefef;
 `;
 
-const ListPage = styled(ListContainer)`
+const ListPage = styled.div`
+  position: relative;
+  margin: auto;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   width: 390px;
-  height: 844px;
+  height: 100%;
+  min-height: 300px;
+  max-height: 844px;
   flex-direction: column;
   align-items: center;
   background: #fff;
@@ -144,17 +156,21 @@ const ReturnButton = styled.button`
   span {
     font-size: 16px;
     margin-left: 4px;
+    :hover {
+      opacity: 0.65;
+    }
+    :active {
+      opacity: 0.95;
+    }
   }
 `;
 
 const CardListWrapper = styled.section`
   width: 100%;
-  // height: 100vh;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: space-around;
 
   & > article {
     margin-bottom: 45px;
