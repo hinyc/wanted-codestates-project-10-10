@@ -6,7 +6,10 @@
 
 # 🌳 Forest-Memo
 
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/82592845/155390853-41dff1fd-90bf-4453-9117-4e8849155e83.png">
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/87487161/159153755-c4bfd9ef-74d2-4890-a0e8-be781637c262.gif">
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/87487161/159153851-a777e448-c34d-44c8-9d34-bb46c2d85883.gif">
+
+
 
 > 충청북도의 오픈API 데이터를 활용하여, 마음에 드는 휴양림에 메모를 남기고 관리할 수 있는 웹페이지입니다.
 
