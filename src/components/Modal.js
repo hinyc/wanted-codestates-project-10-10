@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { CompleteModifiedMsg, MemoExistMsg, MemoRequestMsg } from './Feedback';
+import { MemoExistMsg, MemoRequestMsg } from './Feedback';
 
-const Modal = ({ data, setModalOpen, setMyForestPlaces, setShowSaveMsg, setShowRemoveMsg, setShowCompleteModifiedMsg }) => {
+const Modal = ({
+  data,
+  setModalOpen,
+  setMyForestPlaces,
+  setShowSaveMsg,
+  setShowRemoveMsg,
+  setShowCompleteModifiedMsg,
+}) => {
   const isMain = window.location.pathname === '/';
   const [showExistMsg, setShowExistMsg] = useState(false);
   const [showMemoRequestMsg, setShowMemoRequestMsg] = useState(false);
@@ -78,40 +85,45 @@ const Modal = ({ data, setModalOpen, setMyForestPlaces, setShowSaveMsg, setShowR
   };
 
   return (
-    <>
-      <ModalBox>
-        <>
-          <ModalContents>
-            <Box>
-              <p className="BoxText">이름</p>
-              <p className="BoxData">{fcNm}</p>
-            </Box>
-            <Box>
-              <p className="BoxText">주소</p>
-              <p className="BoxData">{fcAddr}</p>
-            </Box>
-            <Box>
-              <p className="BoxText">연락처</p>
-              <p className="BoxData">{ref1}</p>
-            </Box>
-            <BoxTwo>
-              <p className="BoxText">메모</p>
-              <MemoInput ref={inputValueRef} value={inputValue || ''} onChange={(event) => setInputValue(event.target.value)} />
-              {isMain && (
-                <>
-                  <DeleteButton onClick={deleteMemo}>삭제</DeleteButton>
-                  <UpdateButton onClick={updateMemo}>수정</UpdateButton>
-                </>
-              )}
-              {!isMain && <SaveButton onClick={saveMyForest}>저장</SaveButton>}
-            </BoxTwo>
-          </ModalContents>
-          <ModalBackground onClick={closeModal} />
-        </>
-      </ModalBox>
-      {showExistMsg && <MemoExistMsg setShowExistMsg={setShowExistMsg} />}
-      {showMemoRequestMsg && <MemoRequestMsg setShowMemoRequestMsg={setShowMemoRequestMsg} />}
-    </>
+    <ModalBox>
+      <ModalContents>
+        <FeedBackBox>
+          {' '}
+          {showExistMsg && <MemoExistMsg setShowExistMsg={setShowExistMsg} />}
+          {showMemoRequestMsg && (
+            <MemoRequestMsg setShowMemoRequestMsg={setShowMemoRequestMsg} />
+          )}
+        </FeedBackBox>
+        <Box>
+          <p className="BoxText">이름</p>
+          <p className="BoxData">{fcNm}</p>
+        </Box>
+        <Box>
+          <p className="BoxText">주소</p>
+          <p className="BoxData">{fcAddr}</p>
+        </Box>
+        <Box>
+          <p className="BoxText">연락처</p>
+          <p className="BoxData">{ref1}</p>
+        </Box>
+        <BoxTwo>
+          <p className="BoxText">메모</p>
+          <MemoInput
+            ref={inputValueRef}
+            value={inputValue || ''}
+            onChange={(event) => setInputValue(event.target.value)}
+          />
+          {isMain && (
+            <>
+              <DeleteButton onClick={deleteMemo}>삭제</DeleteButton>
+              <UpdateButton onClick={updateMemo}>수정</UpdateButton>
+            </>
+          )}
+          {!isMain && <SaveButton onClick={saveMyForest}>저장</SaveButton>}
+        </BoxTwo>
+      </ModalContents>
+      <ModalBackground onClick={closeModal} />
+    </ModalBox>
   );
 };
 
@@ -119,11 +131,15 @@ const ModalBox = styled.div`
   width: auto;
   height: auto;
 `;
+const FeedBackBox = styled.div`
+  position: relative;
+`;
 
 const ModalContents = styled.div`
   width: 75%;
+  width: 360px;
   height: auto;
-  padding: 10% 8%;
+  padding: 40px 20px;
   overflow: hidden;
   background-color: #fff;
   border-radius: 15px;
@@ -132,9 +148,9 @@ const ModalContents = styled.div`
   justify-content: center;
   flex-direction: column;
   position: fixed;
-  top: 50%;
+  top: 10%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
   animation: fadeInModal 0.35s;
   z-index: 9;
 
@@ -202,7 +218,7 @@ const DeleteButton = styled.span`
   color: #fff;
   margin-top: 20px;
   padding: 0 10px;
-  background-color: red;
+  background-color: #ff6b6b;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   font-weight: bold;

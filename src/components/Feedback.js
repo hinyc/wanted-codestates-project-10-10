@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { keyframes } from 'styled-components';
 
 export function MemoRequestMsg({ setShowMemoRequestMsg }) {
   useEffect(() => {
@@ -11,8 +10,7 @@ export function MemoRequestMsg({ setShowMemoRequestMsg }) {
     <FeedbackContainerStyle //
       height={'60px'}
       width={'210px'}
-      top={'10%'}
-      left={'70%'}
+      top={'15px'}
     >
       메모를 입력해주세요.
     </FeedbackContainerStyle>
@@ -28,8 +26,7 @@ export function MemoExistMsg({ setShowExistMsg }) {
     <FeedbackContainerStyle //
       height={'60px'}
       width={'210px'}
-      top={'10%'}
-      left={'70%'}
+      top={'15px'}
     >
       이미 등록되었습니다.
     </FeedbackContainerStyle>
@@ -81,7 +78,7 @@ export function CompleteRemovedMsg({ setShowRemoveMsg }) {
     <FeedbackContainerStyle //
       height={'60px'}
       width={'275px'}
-      top={'55%'}
+      top={'13%'}
     >
       삭제가 완료되었습니다.
     </FeedbackContainerStyle>
@@ -103,7 +100,7 @@ export const FeedbackContainerStyle = styled.div`
   font-weight: 700;
   border-radius: 15px;
   text-align: center;
-  position: fixed;
+  position: absolute;
   z-index: 9;
   animation: softRemover 1s;
   @keyframes softRemover {

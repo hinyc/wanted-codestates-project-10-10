@@ -167,12 +167,10 @@ const ReturnButton = styled.button`
 
 const CardListWrapper = styled.section`
   width: 100%;
-  // height: 100vh;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: space-around;
 
   & > article {
     margin-bottom: 45px;

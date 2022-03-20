@@ -27,7 +27,7 @@ const Card = styled.article`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 30px 17px;
+  padding: 10px 20px;
   background: rgba(255, 255, 255, 0.2);
 
   margin-top: 10px;
@@ -40,6 +40,7 @@ const Card = styled.article`
   div {
     font-size: 16px;
     line-height: 18px;
+    margin: 5px 0;
   }
   .forest-data {
     margin-bottom: 20px;
